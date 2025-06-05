@@ -1,0 +1,19 @@
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: antiquewhite;
+}
+
+.large {
+  font-size: 42px;
+}
+
+.medium {
+  font-size: 32px;
+}
+
+.small {
+  font-size: 22px;
+}

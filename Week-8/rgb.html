@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RGB value</title>
+  </head>
+  <body>
+    <button class="red">R</button>
+    <button class="green">G</button>
+    <button class="blue">B</button>
+    <!-- Javascript -->
+    <script>
+      let body = document.querySelector("body");
+
+      document
+        .querySelector(".red")
+        .addEventListener("click", function (event) {
+          body.style.backgroundColor = "red";
+        });
+
+      document
+        .querySelector(".green")
+        .addEventListener("click", function (event) {
+          body.style.backgroundColor = "green";
+        });
+
+      document
+        .querySelector(".blue")
+        .addEventListener("click", function (event) {
+          body.style.backgroundColor = "blue";
+        });
+    </script>
+  </body>
+</html>
