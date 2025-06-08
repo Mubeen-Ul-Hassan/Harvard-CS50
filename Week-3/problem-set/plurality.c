@@ -1,65 +1,121 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
+#include <stdbool.h>
 
-// Prototype
-int get_int(char *statement);
-char *get_string(char *statement);
-void print(char *statement);
+#define MAX 9
+typedef char *string;
 
-int main(int argc, char *argv[])
+typedef struct
 {
-    int no_of_voters = get_int("Number of voters: ");
+    string name;
+    int votes;
+} candidate;
 
-    char *candidate1 = argv[1]; // ALice
-    char *candidate2 = argv[2]; // Bob
-    char *candidate3 = argv[3]; // Charlie
+candidate candidates[MAX];
+int candidate_count;
 
-    int candidate_score[3] = {0, 0, 0};
+bool vote(string name);
+int get_int(const char *statement);
+char *get_string(char statement[]);
+void print_winner(void);
 
-    char *
-        user_candidate;
-    for (int i = 0; i < no_of_voters; i++)
+int main(int argc, string argv[])
+{
+    // check if command line argument was inputted
+    if (argc < 2)
     {
-        user_candidate = get_string("Vote: ");
-
-        if (strcmp(user_candidate, candidate1) == 0)
-        {
-            candidate_score[0]++;
-        }
-        else if (strcmp(user_candidate, candidate2) == 0)
-        {
-            candidate_score[1]++;
-        }
-        else if (strcmp(user_candidate, candidate3) == 0)
-        {
-            candidate_score[2]++;
-        }
-        free(user_candidate);
+        printf("Usage: ./plurality [candidate...]\n");
+        return 1;
     }
 
-    return 0;
+    //-1 bcos argv[0] is ./plurality
+    candidate_count = argc - 1;
+
+    if (candidate_count > MAX)
+    {
+        printf("Maximum number of candidates is %i \n", MAX);
+        return 2;
+    }
+
+    // add names into list
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        candidates[i].name = argv[i + 1];
+        candidates[i].votes = 0;
+    }
+
+    // get number of votes from user
+    int vote_count = get_int("Number of votes: ");
+
+    // for every int vote_count, get a vote
+    for (int i = 0; i < vote_count; i++)
+    {
+        // get vote from user
+        string name = get_string("Vote: ");
+
+        // wrong input
+        if (!vote(name))
+        {
+            printf("Invalid vote.\n");
+        }
+    }
+    // print the winner/(s)
+    print_winner();
 }
 
-int get_int(char *statement)
+bool vote(string name)
 {
-    int num;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcmp(candidates[i].name, name) == 0)
+        {
+            candidates[i].votes++;
+            return true;
+        }
+    }
+    return false;
+}
+
+void print_winner(void)
+{
+    int max_votes = 0;
+
+    // Find highest number of votes.
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes > max_votes)
+        {
+            max_votes = candidates[i].votes;
+        }
+    }
+
+    // Print winner.
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes == max_votes)
+        {
+            printf("%s \n", candidates[i].name);
+        }
+    }
+
+    return;
+}
+
+int get_int(const char *statement)
+{
+    int userNum;
     printf("%s", statement);
-    scanf("%i", &num);
+    scanf("%d", &userNum);
 
-    return num;
+    return userNum;
 }
 
-char *get_string(char *statement)
+char *get_string(char statement[])
 {
-    char *string = malloc(10 * sizeof(char));
-    printf("%s", statement);
-    scanf("%s", string);
+    static char userInput[100];
+    printf("%s ", statement);
+    scanf("%99s", userInput); // Read string upto 99 characters.
 
-    return string;
-}
-
-void print(char *statement)
-{
-    printf("%s\n", statement);
+    return userInput;
 }
