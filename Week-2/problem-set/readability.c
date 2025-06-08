@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <stdlib.h>
 
 // Prototype
 char *get_string(const char *statement);
@@ -12,27 +13,16 @@ int count_sentence(const char *text);
 int main()
 {
     char *text = get_string("Text: ");
-    // printf("%s\n", text);
 
     int letters = count_letter(text);
-    printf("No of letter: %d\n", letters);
 
     int words = count_word(text);
-    printf("No of words: %d\n", words);
 
     int sentences = count_sentence(text);
-    printf("No of sentence: %d\n", sentences);
 
-    float l = ((float)letters / words) * 100;
-    float s = ((float)sentences / words) * 100;
-
-    printf("L: %f\n", l);
-    printf("S: %f\n", s);
-
-    float index_float = 0.0588 * l - 0.296 * s - 15.8;
-    // Error occuring in the round function.
-    int index = round(index_float);
-    printf("Index: %i\n", index);
+    int l = (letters / words) * 100;
+    int s = (sentences / words) * 100;
+    int index = round(0.0588 * l - 0.296 * s - 15.8);
 
     if (index < 1)
     {
